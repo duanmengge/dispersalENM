@@ -211,6 +211,10 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
         data_u <- terra::crop(data_u, cur_raster_1)
         data_u <- terra::project(data_u, dis_crs)
         data_u <- terra::resample(data_u, new_r, method = "bilinear")
+        if(is.null(k_value)){
+          k_value <- max_disp
+        }
+        a <- afun(k_value, data_u, data_v)
       }
     }
 
@@ -264,10 +268,7 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
         if(exists("data_u") && exists("data_v")){
           point$ku <- terra::extract(data_u, point[,c("X","Y")], ID=FALSE)[,1]
           point$kv <- terra::extract(data_v, point[,c("X","Y")], ID=FALSE)[,1]
-          if(is.null(k_value)){
-            k_value <- max_disp
-          }
-          a <- afun(k_value, point$kv, point$ku)
+          a <- a
         }else{
           point$ku <- 0
           point$kv <- 0
