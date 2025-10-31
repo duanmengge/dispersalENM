@@ -214,7 +214,7 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
         if(is.null(k_value)){
           k_value <- max_disp
         }
-        a <- afun(k_value, data_u, data_v)
+        a_value <- afun(k_value, data_u, data_v)
       }
     }
 
@@ -268,7 +268,7 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
         if(exists("data_u") && exists("data_v")){
           point$ku <- terra::extract(data_u, point[,c("X","Y")], ID=FALSE)[,1]
           point$kv <- terra::extract(data_v, point[,c("X","Y")], ID=FALSE)[,1]
-          a <- a
+          a <- a_value
         }else{
           point$ku <- 0
           point$kv <- 0
@@ -315,7 +315,10 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
 
       all_polys <- rbind(edge_polys, move_buffer)
       geom <- sf::st_union(all_polys)
-      geom <- sf::st_collection_extract(geom, "POLYGON")
+      if(any(st_geometry_type(geom) == "GEOMETRYCOLLECTION")){
+        geom <- sf::st_collection_extract(geom, "POLYGON")
+      }
+
       pts_buf_union <- sf::st_cast(geom, "POLYGON")
       if (figure) {
         terra::plot(pts_buf_union)
