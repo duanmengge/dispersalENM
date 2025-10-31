@@ -315,7 +315,7 @@ dispersal <- function(all_infor, occ, n = 8, out_dir = NULL, figure = TRUE,
 
       all_polys <- rbind(edge_polys, move_buffer)
       geom <- sf::st_union(all_polys)
-      if(any(st_geometry_type(geom) == "GEOMETRYCOLLECTION")){
+      if(any(sf::st_geometry_type(geom) == "GEOMETRYCOLLECTION")){
         geom <- sf::st_collection_extract(geom, "POLYGON")
       }
 
