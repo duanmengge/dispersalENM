@@ -61,3 +61,30 @@ file.copy(system.file("extdata", "env/predictenv", package = "dispersalENM"), di
 vars <- c("tasmin", "tasmax", "pre")
 prediction(model, trainenv, vars, pre_infor, dir_out)
 ```
+
+Using the dispersal ability of species to constrain future potential distribution
+``` r
+#Change to actual data frame
+ALL_infor <- readRDS(system.file("extdata", "ALL_infor.rda",
+                                 package = "dispersalENM"))
+occourence <- readRDS(system.file("extdata", "occourence.rda",
+                                 package = "dispersalENM"))
+#Result storage path
+dirout <- getwd()
+
+#Copy the predicted raster files from the system
+file.copy(system.file("extdata", "tif", package = "dispersalENM"), dirout,
+                     recursive = TRUE)
+file.copy(system.file("extdata", "barrier", package = "dispersalENM"), dirout,
+                      recursive = TRUE)
+#Dispersal
+dispersal(all_infor = ALL_infor, occ = occourence, out_dir=dirout, n = 8,
+figure = TRUE)
+```
+Statistical analysis of the results
+``` r
+#Change to actual data frame
+folder_path <- sprintf("%s/%s", getwd(), "dispersal_tif")
+out_dir <- getwd()
+statistics(folder_path = folder_path, out_dir = out_dir)
+```
