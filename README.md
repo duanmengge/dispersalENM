@@ -1,6 +1,6 @@
-dispersalENM
+</dispersalENM>
 The package is used to Construct a species distribution model. 
-Installation
+</Installation>
 devtools::install_github(duanmengge/dispersalENM)
-Example
+</Example>
 library(dispersalENM)
